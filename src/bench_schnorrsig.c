@@ -13,7 +13,7 @@
 #include "util.h"
 #include "bench.h"
 
-/*#define TEST_RISC*/
+#define TEST_RISC
 
 #ifdef TEST_RISC
 
