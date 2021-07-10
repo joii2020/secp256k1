@@ -85,7 +85,6 @@ static SECP256K1_INLINE void secp256k1_callback_call(const secp256k1_callback * 
 
 static SECP256K1_INLINE void *checked_malloc(const secp256k1_callback* cb, size_t size) {
     void *ret = malloc(size);
-    printf("malloc : %ld", size);
     if (ret == NULL) {
         secp256k1_callback_call(cb, "Out of memory");
     }

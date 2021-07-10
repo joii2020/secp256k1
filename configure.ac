@@ -481,9 +481,10 @@ else
   fi
 fi
 
-if $host in *risc*; then
+case $host in
+  *risc*)
   AC_DEFINE(USE_RISC_V, 1, [Define this run in risc])
-fi
+esac
 
 ###
 ### Generate output

@@ -13,6 +13,18 @@
 #include "util.h"
 #include "bench.h"
 
+/*#define TEST_RISC*/
+
+#ifdef TEST_RISC
+
+#include "bench_schnorrsig_risc.h"
+
+int main(void) {
+    return run();
+}
+
+#else /*TEST_RISC*/
+
 typedef struct {
     secp256k1_context *ctx;
     int n;
@@ -100,3 +112,5 @@ int main(void) {
     secp256k1_context_destroy(data.ctx);
     return 0;
 }
+
+#endif /*TEST_RISC*/
