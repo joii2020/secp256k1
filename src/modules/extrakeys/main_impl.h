@@ -201,7 +201,9 @@ int secp256k1_keypair_create(const secp256k1_context* ctx, secp256k1_keypair *ke
     VERIFY_CHECK(ctx != NULL);
     ARG_CHECK(keypair != NULL);
     memset(keypair, 0, sizeof(*keypair));
+#ifndef USE_RISC_V
     ARG_CHECK(secp256k1_ecmult_gen_context_is_built(&ctx->ecmult_gen_ctx));
+#endif // USE_RISC_V
     ARG_CHECK(seckey32 != NULL);
 
     ret = secp256k1_ec_pubkey_create_helper(&ctx->ecmult_gen_ctx, &sk, &pk, seckey32);

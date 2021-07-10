@@ -11,12 +11,6 @@
 #include "scalar.h"
 #include "scratch.h"
 
-typedef struct {
-    /* For accelerating the computation of a*P + b*G: */
-    secp256k1_ge_storage (*pre_g)[];    /* odd multiples of the generator */
-    secp256k1_ge_storage (*pre_g_128)[]; /* odd multiples of 2^128*generator */
-} secp256k1_ecmult_context;
-
 static const size_t SECP256K1_ECMULT_CONTEXT_PREALLOCATED_SIZE;
 static void secp256k1_ecmult_context_init(secp256k1_ecmult_context *ctx);
 static void secp256k1_ecmult_context_build(secp256k1_ecmult_context *ctx, void **prealloc);

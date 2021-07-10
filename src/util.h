@@ -8,18 +8,13 @@
 #define SECP256K1_UTIL_H
 
 #if defined HAVE_CONFIG_H
-#include "libsecp256k1-config.h"
+#include "include/libsecp256k1-config.h"
 #endif
 
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <limits.h>
-
-typedef struct {
-    void (*fn)(const char *text, void* data);
-    const void* data;
-} secp256k1_callback;
 
 static SECP256K1_INLINE void secp256k1_callback_call(const secp256k1_callback * const cb, const char * const text) {
     cb->fn(text, (void*)cb->data);
@@ -90,6 +85,7 @@ static SECP256K1_INLINE void secp256k1_callback_call(const secp256k1_callback * 
 
 static SECP256K1_INLINE void *checked_malloc(const secp256k1_callback* cb, size_t size) {
     void *ret = malloc(size);
+    printf("malloc : %ld", size);
     if (ret == NULL) {
         secp256k1_callback_call(cb, "Out of memory");
     }
@@ -103,17 +99,6 @@ static SECP256K1_INLINE void *checked_realloc(const secp256k1_callback* cb, void
     }
     return ret;
 }
-
-#if defined(__BIGGEST_ALIGNMENT__)
-#define ALIGNMENT __BIGGEST_ALIGNMENT__
-#else
-/* Using 16 bytes alignment because common architectures never have alignment
- * requirements above 8 for any of the types we care about. In addition we
- * leave some room because currently we don't care about a few bytes. */
-#define ALIGNMENT 16
-#endif
-
-#define ROUND_TO_ALIGN(size) ((((size) + ALIGNMENT - 1) / ALIGNMENT) * ALIGNMENT)
 
 /* Assume there is a contiguous memory object with bounds [base, base + max_size)
  * of which the memory range [base, *prealloc_ptr) is already allocated for usage,
@@ -256,15 +241,6 @@ static SECP256K1_INLINE void secp256k1_int_cmov(int *r, const int *a, int flag) 
 /* If USE_FORCE_WIDEMUL_{INT128,INT64} is set, use that wide multiplication implementation.
  * Otherwise use the presence of __SIZEOF_INT128__ to decide.
  */
-#if defined(USE_FORCE_WIDEMUL_INT128)
-# define SECP256K1_WIDEMUL_INT128 1
-#elif defined(USE_FORCE_WIDEMUL_INT64)
-# define SECP256K1_WIDEMUL_INT64 1
-#elif defined(UINT128_MAX) || defined(__SIZEOF_INT128__)
-# define SECP256K1_WIDEMUL_INT128 1
-#else
-# define SECP256K1_WIDEMUL_INT64 1
-#endif
 #if defined(SECP256K1_WIDEMUL_INT128)
 # if !defined(UINT128_MAX) && defined(__SIZEOF_INT128__)
 SECP256K1_GNUC_EXT typedef unsigned __int128 uint128_t;

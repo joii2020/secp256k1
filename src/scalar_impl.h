@@ -15,7 +15,7 @@
 #include "util.h"
 
 #if defined HAVE_CONFIG_H
-#include "libsecp256k1-config.h"
+#include "include/libsecp256k1-config.h"
 #endif
 
 #if defined(EXHAUSTIVE_TEST_ORDER)

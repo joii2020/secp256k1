@@ -132,7 +132,7 @@ CPPFLAGS_FOR_BUILD +=-I$(top_srcdir) -I$(builddir)/src
 
 gen_context_OBJECTS = gen_context.o
 gen_context_BIN = gen_context$(BUILD_EXEEXT)
-gen_%.o: src/gen_%.c src/libsecp256k1-config.h
+gen_%.o: src/gen_%.c include/libsecp256k1-config.h
 	$(CC_FOR_BUILD) $(DEFS) $(CPPFLAGS_FOR_BUILD) $(SECP_CFLAGS_FOR_BUILD) $(CFLAGS_FOR_BUILD) -c $< -o $@
 
 $(gen_context_BIN): $(gen_context_OBJECTS)

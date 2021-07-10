@@ -72,14 +72,6 @@ static const secp256k1_callback default_error_callback = {
     NULL
 };
 
-struct secp256k1_context_struct {
-    secp256k1_ecmult_context ecmult_ctx;
-    secp256k1_ecmult_gen_context ecmult_gen_ctx;
-    secp256k1_callback illegal_callback;
-    secp256k1_callback error_callback;
-    int declassify;
-};
-
 static const secp256k1_context secp256k1_context_no_precomp_ = {
     { 0 },
     { 0 },
@@ -166,6 +158,14 @@ secp256k1_context* secp256k1_context_create(unsigned int flags) {
     return ctx;
 }
 
+int secp256k1_context_create_noalloc(unsigned int flags, secp256k1_context* ctx) {
+    if (EXPECT(secp256k1_context_preallocated_create(ctx, flags) == NULL, 0)) {
+        return 0;
+    }
+
+    return 1;
+}
+
 secp256k1_context* secp256k1_context_preallocated_clone(const secp256k1_context* ctx, void* prealloc) {
     size_t prealloc_size;
     secp256k1_context* ret;
@@ -203,6 +203,12 @@ void secp256k1_context_destroy(secp256k1_context* ctx) {
     if (ctx != NULL) {
         secp256k1_context_preallocated_destroy(ctx);
         free(ctx);
+    }
+}
+
+void secp256k1_context_destroy_noalloc(secp256k1_context* ctx) {
+    if (ctx != NULL) {
+        secp256k1_context_preallocated_destroy(ctx);
     }
 }
 

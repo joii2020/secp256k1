@@ -7,7 +7,7 @@
 /* Autotools creates libsecp256k1-config.h, of which ECMULT_GEN_PREC_BITS is needed.
    ifndef guard so downstream users can define their own if they do not use autotools. */
 #if !defined(ECMULT_GEN_PREC_BITS)
-#include "libsecp256k1-config.h"
+#include "include/libsecp256k1-config.h"
 #endif
 
 /* We can't require the precomputed tables when creating them. */

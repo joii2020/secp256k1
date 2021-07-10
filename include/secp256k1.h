@@ -7,6 +7,8 @@ extern "C" {
 
 #include <stddef.h>
 
+#include "secp256k1_typedef.h"
+
 /* Unless explicitly stated all pointer arguments must not be NULL.
  *
  * The following rules specify the order of arguments in API calls:
@@ -219,6 +221,9 @@ SECP256K1_API secp256k1_context* secp256k1_context_create(
     unsigned int flags
 ) SECP256K1_WARN_UNUSED_RESULT;
 
+SECP256K1_API int secp256k1_context_create_noalloc(
+    unsigned int flags, secp256k1_context* ctx) SECP256K1_WARN_UNUSED_RESULT;
+
 /** Copy a secp256k1 context object (into dynamically allocated memory).
  *
  *  This function uses malloc to allocate memory. It is guaranteed that malloc is
@@ -246,6 +251,10 @@ SECP256K1_API secp256k1_context* secp256k1_context_clone(
  *               secp256k1_context_create or secp256k1_context_clone
  */
 SECP256K1_API void secp256k1_context_destroy(
+    secp256k1_context* ctx
+);
+
+SECP256K1_API void secp256k1_context_destroy_noalloc(
     secp256k1_context* ctx
 );
 

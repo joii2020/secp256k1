@@ -481,11 +481,15 @@ else
   fi
 fi
 
+if $host in *risc*; then
+  AC_DEFINE(USE_RISC_V, 1, [Define this run in risc])
+fi
+
 ###
 ### Generate output
 ###
 
-AC_CONFIG_HEADERS([src/libsecp256k1-config.h])
+AC_CONFIG_HEADERS([include/libsecp256k1-config.h])
 AC_CONFIG_FILES([Makefile libsecp256k1.pc])
 AC_SUBST(SECP_INCLUDES)
 AC_SUBST(SECP_LIBS)

@@ -15,35 +15,6 @@
 #include "scalar.h"
 #include "ecmult.h"
 
-#if defined(EXHAUSTIVE_TEST_ORDER)
-/* We need to lower these values for exhaustive tests because
- * the tables cannot have infinities in them (this breaks the
- * affine-isomorphism stuff which tracks z-ratios) */
-#  if EXHAUSTIVE_TEST_ORDER > 128
-#    define WINDOW_A 5
-#    define WINDOW_G 8
-#  elif EXHAUSTIVE_TEST_ORDER > 8
-#    define WINDOW_A 4
-#    define WINDOW_G 4
-#  else
-#    define WINDOW_A 2
-#    define WINDOW_G 2
-#  endif
-#else
-/* optimal for 128-bit and 256-bit exponents. */
-#  define WINDOW_A 5
-/** Larger values for ECMULT_WINDOW_SIZE result in possibly better
- *  performance at the cost of an exponentially larger precomputed
- *  table. The exact table size is
- *      (1 << (WINDOW_G - 2)) * sizeof(secp256k1_ge_storage)  bytes,
- *  where sizeof(secp256k1_ge_storage) is typically 64 bytes but can
- *  be larger due to platform-specific padding and alignment.
- *  Two tables of this size are used (due to the endomorphism
- *  optimization).
- */
-#  define WINDOW_G ECMULT_WINDOW_SIZE
-#endif
-
 /* Noone will ever need more than a window size of 24. The code might
  * be correct for larger values of ECMULT_WINDOW_SIZE but this is not
  * not tested.
@@ -62,9 +33,6 @@
 #define WNAF_BITS 128
 #define WNAF_SIZE_BITS(bits, w) (((bits) + (w) - 1) / (w))
 #define WNAF_SIZE(w) WNAF_SIZE_BITS(WNAF_BITS, w)
-
-/** The number of entries a table with precomputed multiples needs to have. */
-#define ECMULT_TABLE_SIZE(w) (1 << ((w)-2))
 
 /* The number of objects allocated on the scratch space for ecmult_multi algorithms */
 #define PIPPENGER_SCRATCH_OBJECTS 6
@@ -298,11 +266,6 @@ static void secp256k1_ecmult_odd_multiples_table_storage_var(const int n, secp25
         secp256k1_fe_negate(&((r)->y), &((r)->y), 1); \
     } \
 } while(0)
-
-static const size_t SECP256K1_ECMULT_CONTEXT_PREALLOCATED_SIZE =
-    ROUND_TO_ALIGN(sizeof((*((secp256k1_ecmult_context*) NULL)->pre_g)[0]) * ECMULT_TABLE_SIZE(WINDOW_G))
-    + ROUND_TO_ALIGN(sizeof((*((secp256k1_ecmult_context*) NULL)->pre_g_128)[0]) * ECMULT_TABLE_SIZE(WINDOW_G))
-    ;
 
 static void secp256k1_ecmult_context_init(secp256k1_ecmult_context *ctx) {
     ctx->pre_g = NULL;

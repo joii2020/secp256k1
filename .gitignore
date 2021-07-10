@@ -42,8 +42,8 @@ coverage.*.html
 *.gcno
 *.gcov
 
-src/libsecp256k1-config.h
-src/libsecp256k1-config.h.in
+include/libsecp256k1-config.h
+include/libsecp256k1-config.h.in
 src/ecmult_static_context.h
 build-aux/config.guess
 build-aux/config.sub
@@ -59,4 +59,5 @@ build-aux/missing
 build-aux/compile
 build-aux/test-driver
 src/stamp-h1
+include/stamp-h1
 libsecp256k1.pc
