@@ -1,0 +1,4 @@
+#include "precomputed_ecmult.c"
+
+#define secp256k1_ecmult_static_pre_context secp256k1_pre_g
+#define secp256k1_ecmult_static_pre128_context secp256k1_pre_g_128

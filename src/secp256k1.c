@@ -56,6 +56,19 @@
     } \
 } while(0)
 
+#ifdef SECP256K1_GE_STORAGE_PTR
+secp256k1_ge_storage* secp256k1_pre_g = NULL;
+secp256k1_ge_storage* secp256k1_pre_g_128 = NULL;
+void update_secp256k1_ge_storage(void* buf) {
+    secp256k1_pre_g = (secp256k1_ge_storage*)buf;
+    secp256k1_pre_g_128 =
+        (secp256k1_ge_storage*)(buf + (ECMULT_TABLE_SIZE(WINDOW_G)) *
+                                          sizeof(secp256k1_ge_storage));
+}
+const secp256k1_ge_storage secp256k1_ecmult_gen_prec_table[COMB_BLOCKS]
+                                                          [COMB_POINTS];
+#endif  // SECP256K1_GE_STORAGE_PTR
+
 /* Note that whenever you change the context struct, you must also change the
  * context_eq function. */
 struct secp256k1_context_struct {
